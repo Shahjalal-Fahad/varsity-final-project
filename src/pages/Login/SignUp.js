@@ -4,6 +4,7 @@ import auth from '../../firebase.init';
 import { useForm } from "react-hook-form";
 import Loading from '../Shared/Loading';
 import { Link, useNavigate } from 'react-router-dom';
+import useToken from '../../hooks/useToken';
 const SignUp = () => {
     const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
     const [
@@ -11,26 +12,28 @@ const SignUp = () => {
         user,
         loading,
         error,
-      ] = useCreateUserWithEmailAndPassword(auth);
-      const [updateProfile, updating, updateError] = useUpdateProfile(auth);
+    ] = useCreateUserWithEmailAndPassword(auth);
+    const [updateProfile, updating, updateError] = useUpdateProfile(auth);
+    const [token]=useToken(user || gUser)
 
     const { register, formState: { errors }, handleSubmit } = useForm();
     let errorMessage;
-const navigate=useNavigate()
-    if (loading || gLoading||updating) {
+    const navigate = useNavigate()
+    if (loading || gLoading || updating) {
         return <Loading />
     }
-    if (error || gError||updateError) {
-        errorMessage = <p className='text-red-500 text-center py-2'>{error?.message || gError?.message ||updateError?.message}</p>
+    if (error || gError || updateError) {
+        errorMessage = <p className='text-red-500 text-center py-2'>{error?.message || gError?.message || updateError?.message}</p>
     }
-    if (user || gUser) {
-        console.log(user || gUser);
+    if (token) {
+        // console.log(user || gUser);
+        navigate("/appointment")
+
     }
-    const onSubmit =async data => {
+    const onSubmit = async data => {
         await createUserWithEmailAndPassword(data.email, data.password)
-        await updateProfile({ displayName:data.name });
-navigate("/")
-        console.log("updare done")
+        await updateProfile({ displayName: data.name });
+        // console.log("updare done")
     };
     return (
         <div className='flex h-screen	 justify-center items-center'>

@@ -7,7 +7,11 @@ import RequireAuth from './pages/Login/RequireAuth';
 import SignUp from './pages/Login/SignUp';
 // import Footer from './pages/Shared/Footer';
 import Navbar from './pages/Shared/Navbar';
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import DashBoard from './pages/DashBoard/DashBoard';
+import MyAppointment from './pages/DashBoard/MyAppointment';
+import MyReview from './pages/DashBoard/MyReview';
 function App() {
   return (
     <div className=" max-w-7xl mx-auto">
@@ -15,11 +19,24 @@ function App() {
       <Routes>
         <Route path='/' element={<Home/>}></Route>
         <Route path='/appointment' element={<RequireAuth><Appointment></Appointment></RequireAuth>}></Route>
-        {/* <Route path='/appointment' element={<RequireAuth><Appointment/></RequireAuth>}></Route> */}
+
+        {/* <Route path='/dashboard' element={<RequireAuth><DashBoard></DashBoard></RequireAuth>}>
+          <Route index element={<MyAppointment></MyAppointment>}></Route>
+          <Route path='/review' element={<MyReview></MyReview>}></Route>
+        </Route> */}
+
+        <Route path="dashboard" element={<RequireAuth><DashBoard></DashBoard></RequireAuth>} >
+          <Route index element={<MyAppointment></MyAppointment>}></Route>
+          <Route path="review" element={<MyReview></MyReview>}></Route>
+          {/* <Route path="history" element={<MyHistory></MyHistory>}></Route> */}
+        </Route>
+        
         <Route path='/signup' element={<SignUp/>}></Route>
         <Route path='/login' element={<Login/>}></Route>
       </Routes>
       {/* <Footer></Footer> */}
+      <ToastContainer />
+
 
     </div>
   );
